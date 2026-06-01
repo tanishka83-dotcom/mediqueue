@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediQueue - Premium Hospital Queue Management Platform</title>
+  <meta name="description" content="An intuitive doctor queue management platform that improves patient flow, estimates wait-times, and simplifies hospital waiting.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- SVG Gradients Definition -->
+  <svg style="width:0; height:0; position:absolute;" aria-hidden="true">
+    <defs>
+      <!-- Translucent medical cross gradient -->
+      <linearGradient id="cross-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
+        <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.15"/>
+        <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.05"/>
+      </linearGradient>
+      
+      <!-- Chart area gradient fill -->
+      <linearGradient id="chart-gradient-fill" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#2563eb" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#2563eb" stop-opacity="0.00"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <!-- ==========================================
+       VIEW A: PATIENT LANDING & PUBLIC PORTAL
+       ========================================== -->
+  <div id="patient-view">
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+      <div class="container">
+        <a href="#" class="logo">
+          <!-- Sleek pulse pulse wave SVG -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253" />
+          </svg>
+          <span>MediQueue</span>
+        </a>
+        
+        <ul class="nav-links">
+          <li><a href="#features" class="nav-link">Features</a></li>
+          <li><a href="#live-queue" class="nav-link">Live Queue</a></li>
+          <li><a href="#analytics" class="nav-link">Analytics</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+
+        <div class="navbar-cta" style="display:flex; gap:1rem; align-items:center;">
+          <button class="btn btn-outline" id="nav-login-btn">Doctor Portal</button>
+          <a href="#book-appointment-anchor" class="btn btn-primary" id="nav-booking-btn">Book Now</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero-sec">
+      <div class="ecg-bg">
+        <svg width="100%" height="100%" viewBox="0 0 1000 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <path class="ecg-line" d="M0,100 L300,100 L315,80 L330,120 L345,100 L360,100 L370,50 L385,170 L400,90 L415,105 L425,100 L700,100 L715,80 L730,120 L745,100 L760,100 L770,50 L785,170 L800,90 L815,105 L825,100 L1000,100" />
+        </svg>
+      </div>
+
+      <div class="container">
+        <!-- Hero Left -->
+        <div class="hero-content">
+          <div class="badge-tag">
+            <span></span> Smart Queue Management
+          </div>
+          <h1>Making Hospital Waiting <span>Smarter</span>.</h1>
+          <p class="hero-subtext">An intuitive queue management platform that improves patient flow, eliminates waiting anxieties, and optimizes healthcare operations.</p>
+          <div class="hero-ctas">
+            <a href="#book-appointment-anchor" class="btn btn-primary">Book Appointment</a>
+            <a href="#live-queue" class="btn btn-outline">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:18px; height:18px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              </svg>
+              View Live Queue
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero Right (3D Sandbox) -->
+        <div class="hero-visuals" id="hero-sandbox">
+          <div class="floating-glass-cross" id="hero-float-cross">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 2h6v7h7v6h-7v7H9v-7H2V9h7V2z" />
+            </svg>
+          </div>
+
+          <div class="floating-capsule" id="hero-float-capsule">
+            <div class="capsule-half-left"></div>
+            <div class="capsule-half-right"></div>
+          </div>
+
+          <div class="card-stack-3d" id="card-stack">
+            <div class="card-3d card-queue-status" data-depth="0.3">
+              <div class="card-header">
+                <span class="card-title">General Medicine Queue</span>
+                <span class="availability-tag active"><span></span> Live</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                <div class="card-value" id="hero-queue-count">6</div>
+                <div style="font-size:0.85rem; color:var(--text-muted);">Patients Waiting</div>
+              </div>
+              <div class="wait-time-indicator">
+                <span class="wait-time-label">Estimated Wait Time</span>
+                <span class="wait-time-value" id="hero-wait-time">24 Mins</span>
+              </div>
+            </div>
+
+            <div class="card-3d card-doctor-status" data-depth="0.5">
+              <div class="dr-avatar-info">
+                <div class="dr-avatar-circle">SJ</div>
+                <div class="dr-details">
+                  <h4>Dr. Sarah Jenkins</h4>
+                  <p>Cardiology Consultant</p>
+                </div>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="availability-tag active" id="hero-dr-status-badge"><span></span> In Consultation</span>
+                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">Room 104</span>
+              </div>
+              <div class="patient-load">
+                <span>Next: P-1025</span>
+                <span>Wait: ~12 min</span>
+              </div>
+            </div>
+
+            <div class="card-3d card-mini-chart" data-depth="0.2">
+              <div class="mini-chart-header">
+                <span class="mini-chart-title">Avg. Wait Time</span>
+                <span class="mini-chart-trend">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" style="width:12px; height:12px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3" />
+                  </svg>
+                  18%
+                </span>
+              </div>
+              <div class="mini-chart-val" id="hero-avg-wait">14.5m</div>
+              <div class="mini-sparkline">
+                <svg width="100%" height="100%" viewBox="0 0 200 50">
+                  <path class="sparkpath" d="M0,45 Q25,25 50,40 T100,10 T150,30 T200,5" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Platform Features</span>
+          <h2>Designed for Modern Hospital Workflows</h2>
+          <p>A comprehensive suite of tools built to optimize patient queuing, decrease administrative workloads, and deliver a smooth experience.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-container feature-icon-blue">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.375c.9 0 1.625-.724 1.625-1.625V13.5c0-.9-.725-1.625-1.625-1.625H9.75M12 22.5c5.799 0 10.5-4.701 10.5-10.5S17.799 1.5 12 1.5 1.5 6.201 1.5 12 6.201 22.5 12 22.5Z" />
+              </svg>
+            </div>
+            <h3>Live Queue Tracking</h3>
+            <p>Real-time visual monitoring of queue counts, active consultations, and patient status updates from any device.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-container feature-icon-sage">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+              </svg>
+            </div>
+            <h3>Appointment Scheduling</h3>
+            <p>Seamless online booking system that assigns patients to the correct department and computes immediate line placement.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-container feature-icon-amber">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+              </svg>
+            </div>
+            <h3>Doctor Availability</h3>
+            <p>Transparent indicator boards depicting doctor consultation states (Available, Delayed, Busy, Offline).</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-container feature-icon-amber">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+              </svg>
+            </div>
+            <h3>Emergency Priority Handling</h3>
+            <p>Instant triage re-routing which slots emergency cases directly to the top of the queue and recalculates other wait-times.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-container feature-icon-blue">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+            <h3>Smart Wait-Time Estimation</h3>
+            <p>AI-driven estimation algorithms factoring in average department consultation times, priority loads, and doctor speed.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-container feature-icon-sage">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a9.05 9.05 0 0 0 5.105-.228c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v5.018Z" />
+              </svg>
+            </div>
+            <h3>AI Chatbot Support Assistant</h3>
+            <p>Round-the-clock conversational assistant ready to guide booking procedures, check delays, and offer general guidelines.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Queue Preview Section -->
+    <section class="live-queue-sec" id="live-queue">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Live Feed</span>
+          <h2>Real-Time Department Status</h2>
+          <p>Monitor patient line sequences in real-time. Use the search bar to locate specific patients or filter by departments.</p>
+        </div>
+
+        <div class="queue-dashboard-grid">
+          <div class="queue-board-panel">
+            <div class="board-filters">
+              <div class="search-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.602 10.602Z" />
+                </svg>
+                <input type="text" class="search-input" id="queue-search" placeholder="Search by patient ID, name, or doctor...">
+              </div>
+              
+              <ul class="dept-tabs">
+                <li class="dept-tab active" data-dept="all">All</li>
+                <li class="dept-tab" data-dept="General Medicine">General</li>
+                <li class="dept-tab" data-dept="Pediatrics">Pediatrics</li>
+                <li class="dept-tab" data-dept="Cardiology">Cardiology</li>
+                <li class="dept-tab" data-dept="Orthopedics">Orthopedics</li>
+              </ul>
+            </div>
+
+            <div class="queue-cards-container" id="live-queue-list">
+              <!-- Dynamic entries -->
+            </div>
+          </div>
+
+          <!-- Booking Column -->
+          <div class="booking-column-wrapper" id="book-appointment-anchor">
+            <div class="booking-card">
+              <h3>Book Appointment</h3>
+              <p>Join the digital queue. Fill out the details below to receive a queue token and immediate wait estimation.</p>
+              
+              <form id="appointment-form">
+                <div class="form-group">
+                  <label for="booking-name">Patient Full Name</label>
+                  <input type="text" class="form-input" id="booking-name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="booking-dept">Department</label>
+                  <select class="form-select" id="booking-dept" required>
+                    <option value="" disabled selected>Select Department</option>
+                    <option value="General Medicine">General Medicine</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="booking-doctor">Doctor Selection</label>
+                  <select class="form-select" id="booking-doctor" required disabled>
+                    <option value="" disabled selected>Choose Doctor</option>
+                  </select>
+                </div>
+
+                <!-- NEW: Emergency Option -->
+                <div class="form-group" style="margin-top: 1.25rem;">
+                  <label style="display:flex; align-items:center; gap:0.6rem; cursor:pointer; color:var(--text-main); font-weight:600; font-size:0.85rem; user-select:none;">
+                    <input type="checkbox" id="booking-emergency" style="width:18px; height:18px; cursor:pointer;">
+                    ⚠️ Mark as Emergency Triage Case
+                  </label>
+                </div>
+
+                <div id="booking-emergency-warning" style="display:none; background-color:var(--emergency-light); border:1px solid var(--emergency-border); padding:0.8rem; border-radius:10px; color:var(--emergency); font-size:0.75rem; line-height:1.4; margin-top:0.8rem;">
+                  <strong>Notice:</strong> Emergency status will bypass standard queues. Confirming slots this patient immediately at the top of the wait list.
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:18px; height:18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                  Confirm Appointment
+                </button>
+              </form>
+
+              <div class="booking-result-box" id="booking-result">
+                <!-- Success details -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-sec" id="analytics">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Performance Hub</span>
+          <h2>Queue Operations Analytics</h2>
+          <p>Review real-time analytics linked directly with active queue operations. Watch charts morph as you call patients or slot emergencies.</p>
+        </div>
+
+        <div class="analytics-grid">
+          <div class="analytics-card-3d">
+            <div class="analytics-card-title">
+              <h3>Hourly Flow Rate</h3>
+              <select id="analytics-filter">
+                <option value="today">Today</option>
+                <option value="week">Past Week</option>
+              </select>
+            </div>
+            
+            <div class="chart-wrapper-full">
+              <svg class="svg-chart-line" viewBox="0 0 600 250" id="flow-line-chart">
+                <line x1="50" y1="30" x2="550" y2="30" class="grid-line" />
+                <line x1="50" y1="80" x2="550" y2="80" class="grid-line" />
+                <line x1="50" y1="130" x2="550" y2="130" class="grid-line" />
+                <line x1="50" y1="180" x2="550" y2="180" class="grid-line" />
+                <line x1="50" y1="210" x2="550" y2="210" class="grid-line" style="stroke:var(--text-light); stroke-dasharray:none; stroke-width:1px;" />
+                
+                <text x="50" y="230" class="chart-axis-text" text-anchor="middle">09:00</text>
+                <text x="150" y="230" class="chart-axis-text" text-anchor="middle">11:00</text>
+                <text x="250" y="230" class="chart-axis-text" text-anchor="middle">13:00</text>
+                <text x="350" y="230" class="chart-axis-text" text-anchor="middle">15:00</text>
+                <text x="450" y="230" class="chart-axis-text" text-anchor="middle">17:00</text>
+                <text x="550" y="230" class="chart-axis-text" text-anchor="middle">19:00</text>
+                
+                <text x="40" y="213" class="chart-axis-text" text-anchor="end">0</text>
+                <text x="40" y="183" class="chart-axis-text" text-anchor="end">5</text>
+                <text x="40" y="133" class="chart-axis-text" text-anchor="end">15</text>
+                <text x="40" y="83" class="chart-axis-text" text-anchor="end">30</text>
+                <text x="40" y="33" class="chart-axis-text" text-anchor="end">45</text>
+
+                <path class="main-chart-area" d="" id="chart-area-path" />
+                <path class="main-chart-path" d="" id="chart-line-path" />
+                <g id="chart-nodes"></g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="analytics-list-cards">
+            <div class="analytics-card-3d" style="padding: 1.5rem 1.8rem;">
+              <div class="analytics-card-title" style="margin-bottom: 1rem;">
+                <h3>Wait Time per Dept</h3>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Mins</span>
+              </div>
+              
+              <div class="chart-wrapper-full" style="height: 140px;">
+                <div class="chart-bar-container" id="wait-bar-chart">
+                  <div class="bar-column">
+                    <div class="bar-val" id="val-dept-gen">12m</div>
+                    <div class="bar-graphic-wrapper">
+                      <div class="bar-graphic" id="bar-dept-gen" style="height: 60%;"></div>
+                    </div>
+                    <div class="bar-label">General</div>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar-val" id="val-dept-ped">8m</div>
+                    <div class="bar-graphic-wrapper">
+                      <div class="bar-graphic" id="bar-dept-ped" style="height: 40%;"></div>
+                    </div>
+                    <div class="bar-label">Pediatrics</div>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar-val" id="val-dept-card">20m</div>
+                    <div class="bar-graphic-wrapper">
+                      <div class="bar-graphic" id="bar-dept-card" style="height: 90%;"></div>
+                    </div>
+                    <div class="bar-label">Cardio</div>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar-val" id="val-dept-orth">15m</div>
+                    <div class="bar-graphic-wrapper">
+                      <div class="bar-graphic" id="bar-dept-orth" style="height: 75%;"></div>
+                    </div>
+                    <div class="bar-label">Ortho</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="analytics-card-3d" style="padding: 1.5rem 1.8rem;">
+              <div class="analytics-card-title" style="margin-bottom: 1rem;">
+                <h3>Status Distribution</h3>
+              </div>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; align-items:center; gap:1rem;">
+                <div class="chart-wrapper-full" style="height:120px; width:120px; margin: 0 auto;">
+                  <svg width="100%" height="100%" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="var(--border-light)" stroke-width="8" />
+                    <circle class="donut-segment donut-segment-1" id="donut-seg-consulting" cx="50" cy="50" r="45" fill="none" stroke-width="8" />
+                    <circle class="donut-segment donut-segment-2" id="donut-seg-waiting" cx="50" cy="50" r="45" fill="none" stroke-width="8" />
+                    <circle class="donut-segment donut-segment-3" id="donut-seg-emergency" cx="50" cy="50" r="45" fill="none" stroke-width="8" />
+                  </svg>
+                  <div class="donut-center-text">
+                    <div class="donut-center-val" id="donut-total-count">12</div>
+                    <div class="donut-center-label">Active</div>
+                  </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.75rem;">
+                  <div style="display:flex; align-items:center; gap:0.4rem;">
+                    <span style="width:8px; height:8px; border-radius:50%; background-color:var(--primary); display:inline-block;"></span>
+                    <span>Waiting (<strong id="donut-lbl-waiting">6</strong>)</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:0.4rem;">
+                    <span style="width:8px; height:8px; border-radius:50%; background-color:var(--sage); display:inline-block;"></span>
+                    <span>Consulting (<strong id="donut-lbl-consulting">4</strong>)</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:0.4rem;">
+                    <span style="width:8px; height:8px; border-radius:50%; background-color:var(--emergency); display:inline-block;"></span>
+                    <span>Emergency (<strong id="donut-lbl-emergency">2</strong>)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section class="faq-sec" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Anxieties Solved</span>
+          <h2>Frequently Asked Questions</h2>
+          <p>Answers to common questions regarding queue estimations, emergency priority rules, and appointment scheduling.</p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>How does the Estimated Wait Time calculation work?</h4>
+              <div class="faq-toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Our smart wait-time estimator dynamically calculates wait duration based on the active patient count, historical department speed trends, and individual doctor consultation durations. If an emergency triggers, other estimated times will update automatically.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>What happens if a doctor gets called for an emergency?</h4>
+              <div class="faq-toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Emergency patients bypass standard scheduling sequences. The doctor triggers an Emergency State from their panel, slotting that case immediately into the next spot. This ensures critical care is delivered instantly without manual rescheduling.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>Can I track my live position if I step out of the hospital?</h4>
+              <div class="faq-toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>Yes. MediQueue is fully mobile-responsive and functions as a web application. Once checked in, you can monitor the live feed, check doctor status, and watch your position advance directly from your smartphone browser.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h4>How do I cancel or reschedule my place in the queue?</h4>
+              <div class="faq-toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+              </div>
+            </div>
+            <div class="faq-answer">
+              <p>You can use the AI assistant widget at the bottom right to request a status change, or simply report to the desk where administrators can shift or cancel your ticket sequence with a single click in their panels.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Floating Chatbot Trigger -->
+    <button class="chatbot-trigger" id="chatbot-toggle" aria-label="Open support assistant">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-3.658A8.951 8.951 0 0 1 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+      </svg>
+    </button>
+
+    <div class="chatbot-panel glass" id="chatbot-panel">
+      <div class="chat-header">
+        <div class="chat-header-avatar">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:20px; height:20px; color:white;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-5.097a9.001 9.001 0 10-8.169-4.99" />
+          </svg>
+        </div>
+        <div class="chat-header-info">
+          <h4>Queue Assistant</h4>
+          <span>Online</span>
+        </div>
+        <button class="chat-close-btn" id="chatbot-close" aria-label="Close panel">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="chat-body" id="chat-messages-container">
+        <div class="chat-msg chat-msg-bot">
+          Hello! I'm your MediQueue Assistant. How can I help you today?
+          <div class="chat-chips">
+            <span class="chat-chip" onclick="handleChipClick('wait-times')">Check Wait Times</span>
+            <span class="chat-chip" onclick="handleChipClick('avail')">Doctor Availability</span>
+            <span class="chat-chip" onclick="handleChipClick('emergency')">Emergency Policy</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="chat-footer">
+        <input type="text" class="chat-input" id="chat-user-input" placeholder="Type a message...">
+        <button class="chat-send-btn" id="chat-send-trigger" aria-label="Send message">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a href="#" class="logo">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253" />
+              </svg>
+              <span>MediQueue</span>
+            </a>
+            <p>Optimizing hospital efficiency and patient waiting experiences with smart queue analytics.</p>
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Twitter">
+                <svg fill="currentColor" viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M22 5.8a8.3 8.3 0 01-2.4.7 4.2 4.2 0 001.8-2.3 8.3 8.3 0 01-2.6 1 4.1 4.1 0 00-7 3.8A11.7 11.7 0 013.3 4a4.1 4.1 0 001.3 5.5 4 4 0 01-1.9-.5v.1a4.1 4.1 0 003.3 4 4.2 4.2 0 01-1.8.1 4.1 4.1 0 003.9 2.9A8.3 8.3 0 012 17.7a11.7 11.7 0 006.3 1.9c7.6 0 11.7-6.3 11.7-11.7v-.5A8.4 8.4 0 0022 5.8z"/></svg>
+              </a>
+              <a href="#" class="social-link" aria-label="LinkedIn">
+                <svg fill="currentColor" viewBox="0 0 24 24" style="width:18px; height:18px;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="footer-links-col">
+            <h4>Departments</h4>
+            <ul class="footer-links">
+              <li><a href="#live-queue">General Medicine</a></li>
+              <li><a href="#live-queue">Pediatrics</a></li>
+              <li><a href="#live-queue">Cardiology</a></li>
+              <li><a href="#live-queue">Orthopedics</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-links-col">
+            <h4>Product</h4>
+            <ul class="footer-links">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#analytics">Analytics</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-newsletter">
+            <h4>Stay Informed</h4>
+            <p>Subscribe to receive system status alerts and clinic operational summaries.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Subscribed successfully!');">
+              <input type="email" class="newsletter-input" placeholder="name@hospital.com" required aria-label="Email address">
+              <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1.2rem; border-radius:10px;">Send</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 MediQueue Systems Inc. All rights reserved.</p>
+          <p>HIPAA Compliant &bull; Secure Encrypted Patient Pipeline</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ==========================================
+       VIEW B: DOCTOR PORTAL LOGIN SCREEN
+       ========================================== -->
+  <div id="login-view" style="display:none;">
+    <div class="login-container">
+      <div class="login-card glass">
+        <a href="#" class="logo" id="login-logo-back" style="margin-bottom:2rem; justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253" />
+          </svg>
+          <span>MediQueue Portal</span>
+        </a>
+        
+        <h2>Staff Authentication</h2>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem; text-align:center;">Access clinic management dashboard and live queue tools.</p>
+        
+        <form id="login-form">
+          <!-- Dropdown simulation helper for faster evaluation -->
+          <div class="form-group">
+            <label for="login-profile-select">Quick Demo Login</label>
+            <select class="form-select" id="login-profile-select">
+              <option value="" selected>-- Type manually or select profile --</option>
+              <option value="dr-jenkins">Dr. Sarah Jenkins (Cardiology)</option>
+              <option value="dr-patel">Dr. Alex Patel (General Medicine)</option>
+              <option value="dr-smith">Dr. Lisa Smith (Pediatrics)</option>
+              <option value="dr-jones">Dr. Liam Jones (Orthopedics)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="login-username">Doctor ID / Email</label>
+            <input type="text" class="form-input" id="login-username" placeholder="sarah.jenkins@hospital.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="login-password">Security Password</label>
+            <input type="password" class="form-input" id="login-password" value="password" required>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; font-size:0.8rem; color:var(--text-muted);">
+            <label style="display:flex; align-items:center; gap:0.4rem; cursor:pointer;">
+              <input type="checkbox" checked style="width:14px; height:14px;"> Remember Room Session
+            </label>
+            <a href="#" onclick="alert('Please contact hospital IT to reset local keycard keys.')" style="color:var(--primary); font-weight:500;">Reset Password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">Access Portal Workspace</button>
+        </form>
+
+        <button class="btn btn-outline" id="login-back-btn" style="width:100%; margin-top:0.8rem; border-color:transparent;">
+          &larr; Return to Patient Portal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       VIEW C: DEDICATED CLINICAL WORKSPACE
+       ========================================== -->
+  <div id="doctor-workspace-view" style="display:none;">
+    <!-- Doctor Workspace Navigation Header -->
+    <header class="doc-workspace-header">
+      <div class="container-fluid" style="display:flex; justify-content:space-between; align-items:center; padding: 1rem 2rem;">
+        <div style="display:flex; align-items:center; gap:1.5rem;">
+          <a href="#" class="logo" style="color:var(--text-main);">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-.778.099-1.533.284-2.253" />
+            </svg>
+            <span>MediQueue Console</span>
+          </a>
+          <span style="background-color:var(--primary-light); color:var(--primary); font-size:0.75rem; font-weight:700; padding:0.25rem 0.6rem; border-radius:6px; text-transform:uppercase; letter-spacing:0.05em;">HIPAA Compliant Session</span>
+        </div>
+
+        <!-- Right: Logged Doctor Info & Exit -->
+        <div style="display:flex; align-items:center; gap:1.5rem;">
+          <div style="display:flex; align-items:center; gap:0.75rem; border-right:1px solid var(--border-light); padding-right:1.5rem;">
+            <div class="dr-avatar-circle" id="logged-dr-avatar" style="width:40px; height:40px; font-size:0.95rem;">SJ</div>
+            <div style="text-align:right;">
+              <h4 id="logged-dr-name" style="font-size:0.9rem; color:var(--text-main); font-weight:700;">Dr. Sarah Jenkins</h4>
+              <p id="logged-dr-room" style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">Room 104 &bull; Cardiology</p>
+            </div>
+          </div>
+          
+          <button class="btn btn-outline" id="doc-logout-btn" style="padding:0.5rem 1.2rem; border-radius:10px; border-color:var(--emergency-border); color:var(--emergency); background:var(--emergency-light);">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:16px; height:16px;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+            </svg>
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Interactive Workspace Triage Notification Banner -->
+    <div id="workspace-triage-banner" style="display:none; background-color:var(--emergency); color:white; padding:0.8rem; text-align:center; font-size:0.9rem; font-weight:600; animation:pulseBgEmergency 2s infinite alternate;">
+      🚨 WARNING: Emergency Triage checked into Cardiology! Estimated wait times recalculated.
+      <button onclick="dismissTriageBanner()" style="background:rgba(255,255,255,0.25); border:none; padding:0.2rem 0.5rem; color:white; font-size:0.75rem; border-radius:4px; margin-left:1rem; cursor:pointer;">Dismiss Alert</button>
+    </div>
+
+    <!-- Workspace Main Cockpit -->
+    <main class="workspace-main-content">
+      <div class="container" style="max-width: 1200px; padding: 3rem 1.5rem;">
+        <div class="doc-grid">
+          <!-- Sidebar: Clinic Load summary across all doctors -->
+          <div class="doctor-select-sidebar">
+            <h4 style="font-size:0.85rem; font-weight:700; text-transform:uppercase; color:var(--text-light); margin-bottom:0.8rem; letter-spacing:0.05em;">Clinic Staff Active Load</h4>
+            
+            <div class="doctor-card-toggle active" id="sidebar-doc-jenkins" data-doc-id="dr-jenkins">
+              <div class="dr-avatar-circle">SJ</div>
+              <div class="doc-info-meta">
+                <h4>Dr. Sarah Jenkins</h4>
+                <p>Cardio &bull; Room 104</p>
+              </div>
+            </div>
+
+            <div class="doctor-card-toggle" id="sidebar-doc-patel" data-doc-id="dr-patel">
+              <div class="dr-avatar-circle">AP</div>
+              <div class="doc-info-meta">
+                <h4>Dr. Alex Patel</h4>
+                <p>General &bull; Room 202</p>
+              </div>
+            </div>
+
+            <div class="doctor-card-toggle" id="sidebar-doc-smith" data-doc-id="dr-smith">
+              <div class="dr-avatar-circle">LS</div>
+              <div class="doc-info-meta">
+                <h4>Dr. Lisa Smith</h4>
+                <p>Pediatrics &bull; Room 305</p>
+              </div>
+            </div>
+
+            <div class="doctor-card-toggle" id="sidebar-doc-jones" data-doc-id="dr-jones">
+              <div class="dr-avatar-circle">LJ</div>
+              <div class="doc-info-meta">
+                <h4>Dr. Liam Jones</h4>
+                <p>Ortho &bull; Room 410</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Workspace Operator Panel -->
+          <div class="doc-panel-view">
+            <div class="doc-panel-header">
+              <div class="doc-panel-title">
+                <h3 id="operator-doc-name">Dr. Sarah Jenkins</h3>
+                <p id="operator-doc-subtitle">Cardiology | Room 104</p>
+              </div>
+              
+              <div class="doc-actions" id="operator-actions-box">
+                <!-- Enabled for current logged in doctor; switcher disables actions for other doctors -->
+                <button class="btn btn-success" id="btn-call-next">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25V18a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18V8.25m-18 0V6a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 6v2.25m-18 0h18M5.25 6h.008v.008H5.25V6ZM7.5 6h.008v.008H7.5V6Zm2.25 0h.008v.008H9.75V6Z" />
+                  </svg>
+                  Call Next Patient
+                </button>
+                <button class="btn btn-danger" id="btn-add-emergency">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width:16px; height:16px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                  </svg>
+                  Inject Emergency
+                </button>
+              </div>
+            </div>
+
+            <!-- Warning indicator if looking at a dashboard that is NOT yours -->
+            <div id="read-only-warning-badge" style="display:none; background-color:var(--waiting-light); border:1px solid var(--waiting-border); color:var(--waiting); font-size:0.8rem; font-weight:500; padding:0.6rem 1rem; border-radius:10px; margin-bottom:1.5rem;">
+              ⚠️ Viewing read-only data for this practitioner queue. Operations (Call Next, Emergency Inject) are locked unless authenticated.
+            </div>
+
+            <div class="patient-management-board">
+              <!-- Active Consultation -->
+              <div class="current-consultation-card" id="active-consultation-box">
+                <!-- JS updates active patient -->
+              </div>
+
+              <!-- Rest of queue -->
+              <div>
+                <div class="queue-mini-list-header">Upcoming Patient Queue</div>
+                <div class="doc-queue-mini-list" id="doc-queue-mini">
+                  <!-- JS inputs patients remaining for selected doc -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
