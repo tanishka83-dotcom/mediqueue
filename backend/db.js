@@ -1,53 +1,35 @@
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 const path = require('path');
 
 const dbPath = path.join(__dirname, 'database.sqlite');
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error opening SQLite database:', err.message);
-  } else {
-    console.log('Connected to the SQLite database.');
-  }
-});
+const db = new Database(dbPath);
 
-// Helper wrapper to run queries returning no rows (INSERT, UPDATE, DELETE)
+// Enable foreign keys
+db.exec('PRAGMA foreign_keys = ON');
+
+// Run query (INSERT, UPDATE, DELETE)
 const runQuery = (sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) reject(err);
-      else resolve(this); // returns object with .lastID and .changes
-    });
-  });
+  const stmt = db.prepare(sql);
+  const result = stmt.run(params);
+  return result; // { lastInsertRowid, changes }
 };
 
-// Helper wrapper to run queries returning multiple rows (SELECT)
+// Get multiple rows
 const allQuery = (sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) reject(err);
-      else resolve(rows);
-    });
-  });
+  const stmt = db.prepare(sql);
+  return stmt.all(params);
 };
 
-// Helper wrapper to run queries returning a single row (SELECT LIMIT 1)
+// Get single row
 const getQuery = (sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row) => {
-      if (err) reject(err);
-      else resolve(row);
-    });
-  });
+  const stmt = db.prepare(sql);
+  return stmt.get(params);
 };
 
-// Initialize SQLite database tables
-const initDB = async () => {
+// Initialize DB
+const initDB = () => {
   try {
-    // Enable foreign keys
-    await runQuery('PRAGMA foreign_keys = ON');
-
-    // Create doctors table
-    await runQuery(`
+    db.exec(`
       CREATE TABLE IF NOT EXISTS doctors (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         doctorId TEXT UNIQUE NOT NULL,
@@ -63,8 +45,7 @@ const initDB = async () => {
       )
     `);
 
-    // Create patients queue table
-    await runQuery(`
+    db.exec(`
       CREATE TABLE IF NOT EXISTS patients (
         id TEXT PRIMARY KEY,
         name TEXT NOT NULL,
@@ -77,9 +58,8 @@ const initDB = async () => {
     `);
 
     console.log('SQLite tables initialized successfully.');
-  } catch (error) {
-    console.error('Error initializing SQLite tables:', error);
-    throw error;
+  } catch (err) {
+    console.error('DB init error:', err);
   }
 };
 
