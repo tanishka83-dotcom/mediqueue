@@ -76,8 +76,8 @@ const seedDatabase = async () => {
     await initDB();
 
     console.log('Clearing old SQLite database records...');
-    await runQuery('DELETE FROM patients');
-    await runQuery('DELETE FROM doctors');
+   await runQuery('DELETE FROM patients');
+await runQuery('DELETE FROM doctors');
 
     // 2. Hash passwords and insert doctors
     console.log('Seeding doctors into SQLite...');

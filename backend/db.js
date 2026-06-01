@@ -1,54 +1,85 @@
-const { Pool } = require('pg');
+const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
+const db = new sqlite3.Database(
+  path.join(__dirname, "database.sqlite"),
+  (err) => {
+    if (err) {
+      console.error("❌ SQLite connection error:", err.message);
+    } else {
+      console.log("✅ Connected to SQLite database");
+    }
   }
-});
+);
 
-// Generic query function
-const query = (text, params) => {
-  return pool.query(text, params);
-};
+// -------------------- INIT DB (ADD THIS) --------------------
+function initDB() {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.run(`
+        CREATE TABLE IF NOT EXISTS doctors (
+          doctorId TEXT PRIMARY KEY,
+          name TEXT,
+          title TEXT,
+          room TEXT,
+          dept TEXT,
+          avatar TEXT,
+          status TEXT,
+          avgTime INTEGER,
+          email TEXT,
+          password TEXT
+        )
+      `);
 
-// INIT TABLES
-const initDB = async () => {
-  try {
-    await query(`
-      CREATE TABLE IF NOT EXISTS doctors (
-        id SERIAL PRIMARY KEY,
-        doctorid TEXT UNIQUE NOT NULL,
-        name TEXT NOT NULL,
-        title TEXT NOT NULL,
-        room TEXT NOT NULL,
-        dept TEXT NOT NULL,
-        avatar TEXT NOT NULL,
-        status TEXT DEFAULT 'Available',
-        avgtime INT DEFAULT 15,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
-      );
-    `);
+      db.run(`
+        CREATE TABLE IF NOT EXISTS patients (
+          id TEXT PRIMARY KEY,
+          name TEXT,
+          dept TEXT,
+          doctorId TEXT,
+          status TEXT,
+          timeAdded INTEGER
+        )
+      `, (err) => {
+        if (err) reject(err);
+        else resolve();
+      });
+    });
+  });
+}
 
-    await query(`
-      CREATE TABLE IF NOT EXISTS patients (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        dept TEXT NOT NULL,
-        doctorid TEXT NOT NULL,
-        status TEXT DEFAULT 'Waiting',
-        timeadded BIGINT NOT NULL
-      );
-    `);
+// Promise wrapper
+function runQuery(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) reject(err);
+      else resolve(this);
+    });
+  });
+}
 
-    console.log("✅ Supabase DB connected & tables ready");
-  } catch (err) {
-    console.error("❌ DB init error:", err);
-  }
-};
+function getQuery(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+}
+
+function allQuery(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
 
 module.exports = {
-  query,
-  initDB
+  db,
+  initDB,   // ✅ IMPORTANT
+  runQuery,
+  getQuery,
+  allQuery,
 };
