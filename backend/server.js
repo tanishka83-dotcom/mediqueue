@@ -1,35 +1,52 @@
-const express = require('express');
-const http = require('http');
-const cors = require('cors');
-require('dotenv').config();
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
 
-const { initDB } = require('./db');
-
-const authRoutes = require('./routes/auth');
-const queueRoutes = require('./routes/queue');
+const { initDB } = require("./db");
 
 const app = express();
-const server = http.createServer(app);
 
-// INIT DB
-initDB();
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Test route (IMPORTANT)
-app.get('/', (req, res) => {
+// ---------------- ROUTES ----------------
+
+// simple test route
+app.get("/", (req, res) => {
   res.json({ message: "MediQueue backend running 🚀" });
 });
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/queue', queueRoutes);
+// doctors route
+app.get("/api/doctors", async (req, res) => {
+  try {
+    const { allQuery } = require("./db");
+    const doctors = await allQuery("SELECT * FROM doctors");
+    res.json(doctors);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-// Start server
+// patients route
+app.get("/api/patients", async (req, res) => {
+  try {
+    const { allQuery } = require("./db");
+    const patients = await allQuery("SELECT * FROM patients");
+    res.json(patients);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ---------------- START SERVER ----------------
+
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(PORT, async () => {
+  try {
+    await initDB();
+    console.log(`Server running on port ${PORT}`);
+  } catch (err) {
+    console.error("DB init error:", err);
+  }
 });
